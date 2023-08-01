@@ -1,0 +1,26 @@
+{
+  "name": "twinki-social",
+  "version": "1.0.0",
+  "description": "Full stack social network",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jambickz/Twinki-social.git"
+  },
+  "keywords": [
+    "javascript",
+    "expressjs",
+    "onion-architecture",
+    "mysql"
+  ],
+  "author": "wz1x0",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Jambickz/Twinki-social/issues"
+  },
+  "homepage": "https://github.com/Jambickz/Twinki-social#readme"
+}
