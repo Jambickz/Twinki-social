@@ -1,6 +1,8 @@
 # Twinki - A Social Networking Platform :sparkles:
 
-![Twinki Logo](https://twinki.wz1x0.xyz/logo/Twinki-logo.jpg) 
+<a href="https://twinki.wz1x0.xyz/logo/Twinki-logo.jpg">
+  <img src="https://twinki.wz1x0.xyz/logo/Twinki-logo.jpg" alt="Twinki Logo" width="200" height="200">
+</a>
 
 Twinki is a modern and interactive social networking platform that brings people together and fosters meaningful connections. With its intuitive user interface and a robust backend, Twinki is designed to provide users with a seamless and enjoyable social media experience.
 
