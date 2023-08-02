@@ -26,7 +26,7 @@
   },
   "linux": {
     "target": [ "AppImage" ],
-    "icon": "/public/vite.svg"
+    "icon": "/public/icon.svg"
   },
   "nsis": {
     "oneClick": false,
