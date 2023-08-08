@@ -8,15 +8,14 @@ datasource db {
 }
 
 model User {
-  userId        Int       @id @default(autoincrement()) @map("user_id")
-  email         String
-  username      String
-  password      String
-  roles         Role[]
-  createdAt     DateTime  @default(now()) @map("created_at")
-  updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at")
-  activationKey String    @map("activation_key")
-  deletedAt     DateTime? @map("deleted_at")
+  userId    Int       @id @default(autoincrement()) @map("user_id")
+  email     String
+  username  String
+  password  String
+  roles     Role[]
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
 
   lastOnline DateTime @default(now()) @map("last_online")
   isOffline  Boolean  @default(true) @map("is_offline")
@@ -31,13 +30,13 @@ model User {
   following UserFollower[] @relation("Following")
   sessions  UserSession[]
 
-  @@unique([email, username, activationKey])
+  @@unique([email, username])
   @@index([userId, username, email])
   @@map("users")
 }
 
 model UserSession {
-  id        Int      @id @default(autoincrement())
+  sessionId Int      @id @default(autoincrement()) @map("session_id")
   userId    Int      @map("user_id")
   isActive  Boolean  @default(true) @map("is_active")
   ip        String?  @db.VarChar(120)
@@ -48,6 +47,10 @@ model UserSession {
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
   user User? @relation(fields: [userId], references: [userId])
+
+  @@unique([sessionId])
+  @@index([userId, sessionId])
+  @@map("user_session")
 }
 
 model UserFollower {

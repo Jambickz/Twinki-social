@@ -1,4 +1,4 @@
-module.exports = class UserRepository {
+module.exports = class UserModel {
 	constructor({
 		            userId,
 		            email,

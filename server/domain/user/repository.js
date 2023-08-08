@@ -1,3 +1,4 @@
+
 module.exports = class UserRepository {
 	// Сохранить нового пользователя в базе данных
 	// domainUser: объект domainUser (модель пользователя) для сохранения
@@ -29,8 +30,13 @@ module.exports = class UserRepository {
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
 	}
 	
-	// Получить пользователя из базы данных по его email, username
-	getByUsername(string) {
+	// Получить пользователя из базы данных по его  username
+	getByUsername(username) {
+		throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
+	}
+	
+	// Получить пользователя из базы данных по его  email
+	getByEmail(email) {
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
 	}
 

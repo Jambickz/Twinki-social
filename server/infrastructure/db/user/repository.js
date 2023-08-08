@@ -1,5 +1,6 @@
 const UserRepository = require('../../../domain/user/repository');
 const UserMapper = require('./mapper');
+
 module.exports = class PrismaUserRepository extends UserRepository {
 	constructor({db}) {
 		super();
@@ -14,8 +15,8 @@ module.exports = class PrismaUserRepository extends UserRepository {
 				data: domainUser
 			});
 			return this.userMapper.toDomain(newUser)
-		} catch (error) {
-			throw new Error('Failed to create user: ' + error.message);
+		} catch (e) {
+			throw new Error('Failed to create user:' + e.message);
 		}
 	}
 	
@@ -26,8 +27,8 @@ module.exports = class PrismaUserRepository extends UserRepository {
 				data: domainUser,
 			});
 			return this.userMapper.toDomain(updatedUser);
-		} catch (error) {
-			throw new Error('Failed to update user: ' + error.message);
+		} catch (e) {
+			throw new Error('Failed to update user: '+ e.message );
 		}
 	}
 	
@@ -49,8 +50,8 @@ module.exports = class PrismaUserRepository extends UserRepository {
 			});
 			
 			return this.userMapper.toDomain(deletedUser);
-		} catch (error) {
-			throw new Error('Failed to "delete" user: ' + error.message);
+		} catch (e) {
+			throw new Error('Failed to "delete" user: ' + e.message);
 		}
 	}
 	
@@ -60,9 +61,9 @@ module.exports = class PrismaUserRepository extends UserRepository {
 				where: { userId },
 			});
 			if (user) return this.userMapper.toDomain(user);
-			else throw new Error('User not found');
-		} catch (error) {
-			throw new Error('Failed to fetch user: ' + error.message);
+			else throw new Error('Failed to find user ');
+		} catch (e) {
+			throw new Error('Failed to fetch user : ' + e.message);
 		}
 	}
 	
@@ -70,8 +71,20 @@ module.exports = class PrismaUserRepository extends UserRepository {
 		try {
 			const users = await this.db.user.findMany();
 			return users.map(user => this.userMapper.toDomain(user));
-		} catch (error) {
-			throw new Error('Failed to fetch users: ' + error.message);
+		} catch (e) {
+			throw new Error('Failed to fetch users: '+ e.message );
+		}
+	}
+	
+	async getByEmail(email) {
+		try {
+			const user = await this.db.user.findUnique({
+				where: { email },
+			});
+			if (user) return this.userMapper.toDomain(user);
+			else throw new Error('Failed to find user')
+		} catch (e) {
+			throw new Error('Failed to fetch user: ' + e.message);
 		}
 	}
 	
