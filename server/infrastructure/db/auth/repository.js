@@ -49,5 +49,19 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
 		}
 	}
 	
+	async removeSession(sessionId) {
+		try {
+			await this.db.userSession.update({
+				where: {
+					sessionId: sessionId,
+				},
+				data: {
+					isActive: false,
+				},
+			});
+		} catch (error) {
+			throw new Error('Failed to remove session: ' + error.message);
+		}
+	}
 	
 }

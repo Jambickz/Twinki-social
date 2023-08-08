@@ -76,10 +76,30 @@ module.exports = class PrismaUserRepository extends UserRepository {
 		}
 	}
 	
+	async getByUsernameOrEmail(usernameOrEmail) {
+		try {
+			const user = await this.db.user.findFirst({
+				where: {
+					OR: [
+						{ username: usernameOrEmail },
+						{ email: usernameOrEmail },
+					],
+				},
+			});
+			if (user) return this.userMapper.toDomain(user);
+			else throw new Error('Failed to find user');
+		} catch (e) {
+			throw new Error('Failed to fetch user: ' + e.message);
+		}
+	}
+	
+	
+	
 	async getByEmail(email) {
 		try {
+			console.log(email)
 			const user = await this.db.user.findUnique({
-				where: { email },
+				where: { email: email }, // Используйте объект с параметром email
 			});
 			if (user) return this.userMapper.toDomain(user);
 			else throw new Error('Failed to find user')
