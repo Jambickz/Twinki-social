@@ -30,16 +30,10 @@ module.exports = class UserRepository {
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
 	}
 	
-	// Получить пользователя из базы данных по его  username
-	getByUsername(username) {
+	// Получить пользователя из базы данных по его  username или email
+	getByUsernameOrEmail(usernameOrEmail) {
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
 	}
-	
-	// Получить пользователя из базы данных по его  email
-	getByEmail(email) {
-		throw new Error('ERR_METHOD_NOT_IMPLEMENTED')
-	}
-
 	
 	// Метод для подписки на пользователя
 	// followerId: идентификатор пользователя, который хочет подписаться (подписчик)

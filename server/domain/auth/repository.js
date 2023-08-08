@@ -1,25 +1,31 @@
 module.exports = class AuthRepository {
 	async createSession(sessionData) {
+		// создание сессии
+		// возврат обьект сессии
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
 	}
 	
-	async registration(user) {
+	async checkUserExistence(email, username) {
+		
+		// проверка на существование юзера с почтой или username
+		// возврат boolean
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
 	}
 	
-	async removeSessionByToken(sessionId) {
+	async getBySessionId(sessionId) {
+		// получение юзера по сессии ид, если сессия активно
+		// то вернет юзера, если нет то null
+		
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
 	}
 	
-	async getUserSessions(userId) {
+	async removeSession(userId) {
+		
+		// отключение сессии
+		// вернет boolean
+		
 		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
 	}
 	
-	async getSessionById(sessionId) {
-		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-	}
 	
-	async updateSession(sessionId, updates) {
-		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-	}
 };

@@ -5,7 +5,7 @@ const AuthService = require('../application/auth.service')
 const PrismaUserRepository = require('./db/user/repository')
 const PrismaAuthRepository = require('./db/auth/repository')
 
-const JwtService = require('./jwt/index')
+const JwtService = require('./services/jwt.service')
 const { PrismaClient } = require("@prisma/client")
 const container = awilix.createContainer()
 

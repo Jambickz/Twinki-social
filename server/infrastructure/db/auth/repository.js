@@ -9,8 +9,9 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
 	}
 	async createSession(sessionData) {
 		try {
+			const domainService = this.authMapper.toDomain(sessionData);
 			return await this.db.userSession.create({
-				data: sessionData,
+				data: domainService,
 			});
 		} catch (e) {
 			throw new Error('Failed to create session:', e.message);
@@ -26,8 +27,25 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
 				],
 			},
 		})
-		console.log(user)
 		return !!user
+	}
+	
+	
+	
+	async removeSession(sessionId) {
+		try {
+			const result =  this.db.userSession.update({
+				where: {
+					sessionId: sessionId,
+				},
+				data: {
+					isActive: false,
+				},
+			});
+			return !!result
+		} catch (error) {
+			throw new Error('Failed to remove session: ' + error.message);
+		}
 	}
 	
 	async getBySessionId(sessionId) {
@@ -46,21 +64,6 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
 			});
 		} catch (e) {
 			throw new Error('Failed to find user by session: ' + e.message);
-		}
-	}
-	
-	async removeSession(sessionId) {
-		try {
-			await this.db.userSession.update({
-				where: {
-					sessionId: sessionId,
-				},
-				data: {
-					isActive: false,
-				},
-			});
-		} catch (error) {
-			throw new Error('Failed to remove session: ' + error.message);
 		}
 	}
 	

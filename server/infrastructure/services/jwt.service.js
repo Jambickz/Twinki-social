@@ -8,7 +8,7 @@ class JwtService {
 	
 	generateTokens({ sessionId }) {
 		const accessToken = jwt.sign({ sessionId }, this.accessTokenSecret, { expiresIn: '30m' });
-		const refreshToken = jwt.sign({ sessionId }, this.refreshTokenSecret, { expiresIn: '30d' });
+		const refreshToken = jwt.sign({ sessionId }, this.refreshTokenSecret, { expiresIn: '1m' });
 		return { accessToken, refreshToken };
 	}
 	

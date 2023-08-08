@@ -1,4 +1,3 @@
-const Session = require("../domain/auth/model")
 const bcrypt = require("bcrypt");
 
 module.exports = class AuthService {
@@ -9,8 +8,7 @@ module.exports = class AuthService {
 	}
 	async createSession(sessionData) {
 		try {
-			const sessionDto = new Session(sessionData)
-			const session = await this.authRepository.createSession(sessionDto)
+			const session = await this.authRepository.createSession(sessionData)
 			const tokens =  this.tokenService.generateTokens(session)
 			return{...tokens, sessionId:session.sessionId}
 		} catch (e) {
@@ -30,6 +28,7 @@ module.exports = class AuthService {
 		}
 	}
 	
+	//TODO: Переделать уаление сессии
 	async deleteSessionByToken(type, token){
 		try {
 			let sessionId;
@@ -47,10 +46,6 @@ module.exports = class AuthService {
 		}
 	}
 	
-	async removeSessionByToken(sessionId) {
-		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-	}
-	
 	async getBySessionId(sessionId) {
 		try {
 			return  await this.authRepository.getBySessionId(sessionId)
@@ -58,14 +53,6 @@ module.exports = class AuthService {
 			throw new Error('Failed to find session: ' + e.message)
 		}
 	}
-	
-	async getSessionById(sessionId) {
-	
-	}
-	
-	async updateSession(sessionId, updates) {
-		throw new Error('ERR_METHOD_NOT_IMPLEMENTED');
-	}
-	
+
 	
 }
