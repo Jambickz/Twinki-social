@@ -1,4 +1,4 @@
-const startAPIServer = require('./infrastructure/api/server')
+const startAPIServer = require('./src/infrastructure/api/server')
 
 const start = () => {
 	startAPIServer()
