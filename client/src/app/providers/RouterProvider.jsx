@@ -1,10 +1,10 @@
 import { lazy } from 'react'
-import { BrowserRouter, Route, Routes, ScrollRestoration } from 'react-router-dom'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { MainLayout } from '~pages/layouts'
 import { Loadable } from '~shared/ui/loadable'
 import { CheckRoute } from '~shared/ui/check-route/index.js'
 
-const HomePage = Loadable(lazy(() => import('~pages/home/HomePage.jsx')))
+const HomePage = Loadable(lazy(() => import('~pages/home')))
 const AuthPage = Loadable(lazy(() => import('~pages/auth')))
 const ProfilePage = Loadable(lazy(() => import('~pages/profile')))
 const SettingsPage = Loadable(lazy(() => import('~pages/settings')))
@@ -21,9 +21,7 @@ const routes = [
   { path: 'home', component: HomePage, onlyAuth: true },
 
   // AuthPage - Блок aунтификации и восстановление пароля
-  { path: 'auth/login', component: AuthPage, onlyNoAuth: true },
-  { path: 'auth/signup', component: AuthPage, onlyNoAuth: true },
-  { path: 'auth/password_reset', component: AuthPage, onlyNoAuth: true },
+  { path: 'auth/:authType', component: AuthPage, onlyNoAuth: true },
 
   // ProfilePage - Страница пользователя
   { path: '@username', component: ProfilePage, onlyAuth: false },
@@ -39,19 +37,18 @@ const routes = [
 ]
 
 export const Router = () => {
-  const { currentUser } = true
-  console.log(Loadable)
+  const currentUser = false
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<HomePage />} />
+          <Route index element={<div>SEX</div>} />
           {routes.map(route => {
             const { path, component: Component } = route
             return (
-                <Route key={path} path={path} element={<CheckRoute isAuth={currentUser} route={route}>
-                    <ScrollRestoration><Component /></ScrollRestoration>
-                </CheckRoute>} />
+              <Route key={path} path={path} element={<CheckRoute isAuth={currentUser} route={route}>
+                <Component />
+              </CheckRoute>} />
             )
           })
           }

@@ -1,1 +1,3 @@
-export { MessengerPage } from './MessengerPage'
+import { MessengerPage } from './MessengerPage'
+
+export default MessengerPage
