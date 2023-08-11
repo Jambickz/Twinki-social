@@ -37,7 +37,7 @@ const routes = [
 ]
 
 export const Router = () => {
-  const currentUser = false
+  const currentUser = true
   return (
     <BrowserRouter>
       <Routes>
