@@ -1,7 +1,8 @@
-const DI = require('../DI')
-const awilix = require('awilix');
-const UserController = require('./user/controller')
-const AuthController = require('./auth/controller')
+const DI = require('~infrastructure/DI.js')
+const awilix = require('awilix')
+const UserController = require('~infrastructure/api/user/controller')
+const AuthController = require('~infrastructure/api/auth/controller')
+
 const apiDI = DI.createScope()
 
 apiDI.register({

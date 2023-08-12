@@ -148,3 +148,14 @@ model Like {
   @@index([postId])
   @@map("likes")
 }
+
+model ActivationCode {
+  codeId         Int       @id @default(autoincrement()) @map("code_id")
+  email          String    @unique
+  activationCode String    @map("activation_code")
+  expiryTime     DateTime  @map("expiry_time")
+  activeAt       DateTime? @map("active_at")
+
+  @@index([email])
+  @@map("activations_code")
+}

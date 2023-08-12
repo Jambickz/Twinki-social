@@ -5,27 +5,28 @@ import { useEffect, useState } from 'react'
 
 const fetchData = async () => {
   try {
-    const response = await $api.getUser(3);
+    const response = await $api.getUser(3)
     return response.data
   } catch (error) {
-    throw error;
+    throw error
   }
-};
+}
+
 
 export const HomePage = () => {
-  const { data, isLoading, error } = useQuery(fetchData);
-  const { t } = useTranslation();
+  const { data, isLoading, error } = useQuery(fetchData)
+  const { t } = useTranslation()
   useEffect(() => {
-    if(!data) return
+    if (!data) return
     console.log(data)
   }, [isLoading])
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div>Loading...</div>
   }
 
   if (error) {
-    return <div>Error: {error.message}</div>;
+    return <div>Error: {error.message}</div>
   }
 
   return (
@@ -33,5 +34,5 @@ export const HomePage = () => {
       {t('TEST')}
       {data && <div>Hello {data.username}</div>}
     </div>
-  );
+  )
 }

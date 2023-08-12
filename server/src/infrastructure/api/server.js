@@ -1,17 +1,17 @@
 const express = require('express')
 const cors = require('cors')
-// const userRouter = require("./user/router")
 const userRouter = require('./user/router')
 const authRouter = require('./auth/router')
 const { scopePerRequest } = require('awilix-express')
 const cookieParser = require('cookie-parser')
-const container = require('../DI')
 const errorMiddleware = require('../helpers/errorMiddleware')
+const container = require('../DI')
 const userAgentMiddleware = require('../helpers/userAgentMiddleware')
 
 const PORT = process.env.PORT || 5000
+const CLIENT = process.env.CLIENT_URL
 
-const start = async () => {
+module.exports = async () => {
   try {
     require('dotenv').config()
     const app = express()
@@ -19,7 +19,7 @@ const start = async () => {
     app.use(express.json())
     app.use(cookieParser())
     app.use(cors({
-      origin: 'http://localhost:5173',
+      origin: CLIENT,
       credentials: true
     }))
     app.use(userAgentMiddleware)
@@ -33,5 +33,3 @@ const start = async () => {
     console.log(e)
   }
 }
-
-module.exports = start
