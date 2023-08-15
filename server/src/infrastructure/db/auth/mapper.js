@@ -5,7 +5,17 @@ module.exports = class ServiceMapper {
     return new Service(data)
   }
 
-  static toData (serviceModel) {
-    return {}
+  static toDatabase (userSession) {
+    return {
+      id: userSession.id,
+      userId: userSession.userId,
+      isActive: userSession.isActive,
+      ip: userSession.ip,
+      browser: userSession.browser,
+      os: userSession.os,
+      device: userSession.device,
+      createdAt: userSession.createdAt,
+      updatedAt: userSession.updatedAt
+    }
   }
 }

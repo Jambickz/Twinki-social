@@ -13,11 +13,11 @@ class MailerService {
     })
   }
 
-  async sendActivationCode (to, activationCode) {
+  async sendActivationCode (email, activationCode) {
     try {
       this.transporter.sendMail({
         from: process.env.SMTP_USER,
-        to,
+        to: email,
         subject: `Your Twinki confirmation code: ${activationCode}`,
         text: '',
         html:

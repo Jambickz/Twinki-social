@@ -8,10 +8,10 @@ datasource db {
 }
 
 model User {
-  userId    Int       @id @default(autoincrement()) @map("user_id")
-  email     String
-  username  String
-  password  String
+  id        Int       @id @default(autoincrement())
+  email     String    @db.VarChar(255)
+  username  String    @db.VarChar(15)
+  password  String    @db.VarChar(128)
   roles     Role[]
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime  @default(now()) @updatedAt @map("updated_at")
@@ -20,23 +20,25 @@ model User {
   lastOnline DateTime @default(now()) @map("last_online")
   isOffline  Boolean  @default(true) @map("is_offline")
 
-  profileName      String? @map("profile_name")
-  profilePicture   Upload? @relation(fields: [profilePictureId], references: [uploadId])
+  profileName      String? @map("profile_name") @db.VarChar(50)
+  profilePicture   Upload? @relation(fields: [profilePictureId], references: [id])
   profilePictureId Int?    @map("profile_picture_id")
-  bio              String?
+  bio              String? @db.VarChar(160)
   verification     Boolean @default(false)
 
   followers UserFollower[] @relation("Follower")
   following UserFollower[] @relation("Following")
   sessions  UserSession[]
 
+  uploads UserUpload[]
+
   @@unique([email, username])
-  @@index([userId, username, email])
+  @@index([id, username, email])
   @@map("users")
 }
 
 model UserSession {
-  sessionId Int      @id @default(autoincrement()) @map("session_id")
+  id        Int      @id @default(autoincrement())
   userId    Int      @map("user_id")
   isActive  Boolean  @default(true) @map("is_active")
   ip        String?  @db.VarChar(120)
@@ -46,77 +48,89 @@ model UserSession {
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @default(now()) @updatedAt @map("updated_at")
 
-  user User? @relation(fields: [userId], references: [userId])
+  user User? @relation(fields: [userId], references: [id])
 
-  @@unique([sessionId])
-  @@index([userId, sessionId])
+  @@unique([id])
+  @@index([userId, id])
   @@map("user_session")
 }
 
 model UserFollower {
-  folowingId  Int      @id @default(autoincrement()) @map("folowing_id")
+  id          Int      @id @default(autoincrement()) @map("id")
   followerId  Int      @map("follower_id")
   followingId Int      @map("following_id")
   createdAt   DateTime @default(now()) @map("created_at")
 
-  followerUser  User @relation("Follower", fields: [followerId], references: [userId])
-  followingUser User @relation("Following", fields: [followingId], references: [userId])
+  followerUser  User @relation("Follower", fields: [followerId], references: [id])
+  followingUser User @relation("Following", fields: [followingId], references: [id])
 
   @@map("users_followers")
 }
 
 model Role {
-  roleId      Int    @id @default(autoincrement()) @map("role_id")
-  roleName    String @unique @map("role_name")
+  id          Int    @id @default(autoincrement())
+  name        String @unique @db.VarChar(255)
   permissions Json
   users       User[]
 
-  @@index([roleId])
+  @@index([id])
   @@map("roles")
 }
 
 model Upload {
-  uploadId    Int           @id @default(autoincrement()) @map("upload_id")
-  url         String        @map("url")
-  fileName    String        @map("file_name")
-  fileType    Int           @map("file_type")
-  fileSize    Int           @map("file_size")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  deletedAt   DateTime?     @map("deleted_at")
-  users       User[]
-  postsUpload PostsUpload[]
+  id         Int          @id @default(autoincrement())
+  url        String       @db.VarChar(255)
+  name       String       @db.VarChar(255)
+  type       Int
+  size       Int
+  createdAt  DateTime     @default(now()) @map("created_at")
+  deletedAt  DateTime?    @map("deleted_at")
+  userUpload UserUpload[]
+  postUpload PostUpload[]
+  User       User[]
 
-  @@index([uploadId])
+  @@index([id])
   @@map("uploads")
 }
 
-model Post {
-  postId      Int           @id @default(autoincrement()) @map("post_id")
-  userId      BigInt        @map("user_id")
-  senderId    BigInt        @map("sender_id")
-  createdAt   DateTime      @default(now()) @map("created_at")
-  updatedAt   DateTime?     @map("updated_at")
-  caption     String        @map("caption")
-  deletedAt   DateTime?     @map("deleted_at")
-  uploadCount Int           @default(0) @map("upload_count")
-  uploads     PostsUpload[]
+model UserUpload {
+  id       Int    @id @default(autoincrement())
+  userId   Int    @map("user_id")
+  uploadId Int    @map("upload_id")
+  upload   Upload @relation(fields: [uploadId], references: [id])
+  User     User?  @relation(fields: [userId], references: [id])
 
-  @@index([postId, userId, senderId])
+  @@map("users_uploads")
+}
+
+model Post {
+  id     Int    @id @default(autoincrement())
+  userId BigInt @map("user_id")
+
+  senderId    BigInt       @map("sender_id")
+  createdAt   DateTime     @default(now()) @map("created_at")
+  updatedAt   DateTime?    @map("updated_at")
+  caption     String       @map("caption") @db.VarChar(255)
+  deletedAt   DateTime?    @map("deleted_at")
+  uploadCount Int          @default(0) @map("upload_count")
+  uploads     PostUpload[]
+
+  @@index([id, userId, senderId])
   @@map("posts")
 }
 
-model PostsUpload {
-  uploadPostId Int    @id @default(autoincrement()) @map("upload_post_id")
-  postId       Int    @map("post_id")
-  uploadId     Int    @map("upload_id")
-  upload       Upload @relation(fields: [uploadId], references: [uploadId])
-  Post         Post?  @relation(fields: [postId], references: [postId])
+model PostUpload {
+  id       Int    @id @default(autoincrement())
+  postId   Int    @map("post_id")
+  uploadId Int    @map("upload_id")
+  upload   Upload @relation(fields: [uploadId], references: [id])
+  Post     Post?  @relation(fields: [postId], references: [id])
 
   @@map("posts_uploads")
 }
 
 model Repost {
-  repostId  Int      @id @default(autoincrement()) @map("repost_id")
+  id        Int      @id @default(autoincrement())
   postId    Int      @map("post_id")
   userId    Int      @map("user_id")
   createdAt DateTime @default(now()) @map("created_at")
@@ -126,10 +140,10 @@ model Repost {
 }
 
 model Comment {
-  commentId       Int       @id @default(autoincrement()) @map("comment_id")
+  id              Int       @id @default(autoincrement())
   postId          Int       @map("post_id")
   userId          Int       @map("user_id")
-  message         String    @map("message")
+  message         String    @map("message") @db.VarChar(255)
   createdAt       DateTime  @default(now()) @map("created_at")
   updatedAt       DateTime? @map("updated_at")
   attachmentCount Int       @default(0) @map("attachment_count")
@@ -140,7 +154,7 @@ model Comment {
 }
 
 model Like {
-  likeId    Int      @id @default(autoincrement()) @map("like_id")
+  id        Int      @id @default(autoincrement())
   userId    Int      @map("user_id")
   postId    Int      @map("post_id")
   createdAt DateTime @default(now()) @map("created_at")
@@ -150,9 +164,9 @@ model Like {
 }
 
 model ActivationCode {
-  codeId         Int       @id @default(autoincrement()) @map("code_id")
-  email          String    @unique
-  activationCode String    @map("activation_code")
+  id             Int       @id @default(autoincrement())
+  email          String    @unique @db.VarChar(255)
+  activationCode Int       @map("activation_code")
   expiryTime     DateTime  @map("expiry_time")
   activeAt       DateTime? @map("active_at")
 

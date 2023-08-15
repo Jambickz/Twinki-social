@@ -1,21 +1,18 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { Login } from './login/Login'
-import { SingUp } from './sign-up/SingUp'
-import { PasswordReset } from './password-reset/PasswordReset'
+import { ModalAuth } from '~widgets/modalAuth'
 
 export const AuthPage = () => {
   const { authType } = useParams()
   const navigate = useNavigate()
-  const handleInvalidAuthType = () => {
-    navigate('/*')
+  if (!['login', 'signup', 'password_reset'].includes(authType)) {
+    navigate('/')
+    return null
   }
-  console.log(authType)
   return (
     <>
-      {authType === 'login' && <Login />}
-      {authType === 'signup' && <SingUp />}
-      {authType === 'password_reset' && <PasswordReset />}
-      {!['login', 'signup', 'password_reset'].includes(authType) && handleInvalidAuthType()}
+      {authType === 'login' && <ModalAuth authType={authType} />}
+      {authType === 'signup' && <ModalAuth authType={authType} />}
+      {authType === 'password_reset' && <ModalAuth authType={authType} />}
     </>
   )
 }

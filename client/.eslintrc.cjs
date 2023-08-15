@@ -16,6 +16,7 @@ module.exports = {
 			'warn',
 			{allowConstantExport: true},
 		],
+		"react/prop-types": 0,
 		'no-tabs': 'off',
 		'no-trailing-spaces': 'off',
 	},

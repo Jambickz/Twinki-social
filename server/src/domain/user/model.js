@@ -1,33 +1,37 @@
 module.exports = class UserModel {
   constructor ({
-    userId,
+    id,
     email,
     username,
     password,
+
     roles,
+
     createdAt,
     updatedAt,
-    activationKey,
     deletedAt,
+
     lastOnline,
     isOffline,
+
     profileName,
     profilePicture,
     profilePictureId,
     bio,
     verification,
+
     followers,
     following,
-    sessions
+    sessions,
+    uploads
   }) {
-    this.userId = userId
+    this.id = id
     this.email = email
     this.username = username
     this.password = password
     this.roles = roles
     this.createdAt = createdAt
     this.updatedAt = updatedAt
-    this.activationKey = activationKey
     this.deletedAt = deletedAt
     this.lastOnline = lastOnline
     this.isOffline = isOffline
@@ -39,5 +43,6 @@ module.exports = class UserModel {
     this.followers = followers
     this.following = following
     this.sessions = sessions
+    this.uploads = uploads
   }
 }

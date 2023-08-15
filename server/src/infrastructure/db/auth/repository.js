@@ -9,32 +9,34 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
 
   async createSession (sessionData) {
     try {
-      const domainService = this.authMapper.toDomain(sessionData)
-      return await this.db.userSession.create({
-        data: domainService
+      const sessionDatabase = this.authMapper.toDatabase(sessionData)
+      console.log(sessionDatabase)
+      const session = await this.db.userSession.create({
+        data: sessionDatabase
       })
-    } catch (e) {
-      throw new Error('Failed to create session:', e.message)
+      if (session) return this.authMapper.toDomain(session)
+      else return null
+    } catch (error) {
+      throw new Error(error.message)
     }
   }
 
-  async checkUserExistence (email, username) {
-    const user = await this.db.user.findFirst({
-      where: {
-        OR: [
-          { email },
-          { username }
-        ]
-      }
-    })
-    return !!user
+  async checkUserExistence (email) {
+    try {
+      const user = await this.db.user.findFirst({
+        where: { email }
+      })
+      return !!user
+    } catch (error) {
+      throw new Error(error.message)
+    }
   }
 
   async removeSession (sessionId) {
     try {
       const result = await this.db.userSession.update({
         where: {
-          sessionId
+          id: sessionId
         },
         data: {
           isActive: false
@@ -42,35 +44,21 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!result
     } catch (error) {
-      throw new Error('Failed to remove session: ' + error.message)
-    }
-  }
-
-  async getBySessionId (sessionId) {
-    try {
-      return await this.db.user.findFirst({
-        where: {
-          sessions: {
-            some: {
-              AND: [
-                { sessionId },
-                { isActive: true }
-              ]
-            }
-          }
-        }
-      })
-    } catch (e) {
-      throw new Error('Failed to find user by session: ' + e.message)
+      throw new Error(error.message)
     }
   }
 
   async findCodeByEmail (email) {
-    return await this.db.activationCode.findFirst({
-      where: {
-        email
-      }
-    })
+    try {
+      const code = await this.db.activationCode.findFirst({
+        where: {
+          email
+        }
+      })
+      return !!code
+    } catch (error) {
+      throw new Error(error.message)
+    }
   }
 
   async updateCodeByEmail (email, code, expiryTime) {
@@ -81,8 +69,7 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!updatedCode
     } catch (error) {
-      console.error('Error updating activation code:', error)
-      throw new Error('Failed to update activation code')
+      throw new Error(error.message)
     }
   }
 
@@ -95,24 +82,43 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
           expiryTime
         }
       })
-      return createdCode.activationCode
+      return createdCode.activationCode || null
     } catch (error) {
-      console.error('Error creating activation code:', error)
-      throw new Error('Failed to create activation code')
+      throw new Error(error.message)
+    }
+  }
+
+  async getBySessionId (sessionId) {
+    try {
+      const session = await this.db.user.findFirst({
+        where: {
+          sessions: {
+            some: {
+              AND: [
+                { id: sessionId },
+                { isActive: true }
+              ]
+            }
+          }
+        }
+      })
+      return session || null
+    } catch (error) {
+      throw new Error(error.message)
     }
   }
 
   async findCode (email, activationCode) {
     try {
-      return await this.db.activationCode.findFirst({
+      const code = await this.db.activationCode.findFirst({
         where: {
           email,
           activationCode
         }
       })
+      return code || null
     } catch (error) {
-      console.error('Error finding activation code::', error)
-      throw new Error('Failed to finding activation code')
+      throw new Error(error.message)
     }
   }
 
@@ -124,8 +130,7 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!updatedCode
     } catch (error) {
-      console.error('Error finding activation code::', error)
-      throw new Error('Failed to finding activation code')
+      throw new Error(error.message)
     }
   }
 }

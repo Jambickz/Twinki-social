@@ -5,13 +5,13 @@ class JwtService {
     this.refreshTokenSecret = process.env.JWT_REFRESH_SECRET
   }
 
-  generateTokens ({ sessionId }) {
-    return jwt.sign({ sessionId }, this.refreshTokenSecret, { expiresIn: '31d' })
+  generateTokens (id) {
+    return jwt.sign({ id }, this.refreshTokenSecret, { expiresIn: '31d' })
   }
 
   validateRefreshToken (token) {
     try {
-      return jwt.verify(token, this.refreshTokenSecret).sessionId
+      return jwt.verify(token, this.refreshTokenSecret).id
     } catch (e) {
       return null
     }

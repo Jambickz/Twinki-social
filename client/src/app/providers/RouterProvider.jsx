@@ -5,6 +5,8 @@ import { Loadable } from '~shared/ui/loadable'
 import { CheckRoute } from '~shared/ui/check-route/index.js'
 
 const HomePage = Loadable(lazy(() => import('~pages/home')))
+const WelcomePage = Loadable(lazy(() => import('~pages/welcome')))
+
 const AuthPage = Loadable(lazy(() => import('~pages/auth')))
 const ProfilePage = Loadable(lazy(() => import('~pages/profile')))
 const SettingsPage = Loadable(lazy(() => import('~pages/settings')))
@@ -20,12 +22,14 @@ const routes = [
   // HomePage - Начальная страница, новостная, просмотр постов
   { path: 'home', component: HomePage, onlyAuth: true },
 
+  { path: '', component: WelcomePage, onlyNoAuth: true },
+
   // AuthPage - Блок aунтификации и восстановление пароля
   { path: 'auth/:authType', component: AuthPage, onlyNoAuth: true },
 
   // ProfilePage - Страница пользователя
   { path: '@username', component: ProfilePage, onlyAuth: false },
-  // SettingsPage - Страница настроек пользователя
+  // WelcomePage - Страница настроек пользователя
   { path: 'settings', component: SettingsPage, onlyAuth: true },
 
   // MessengerPage - Страница чата
@@ -37,12 +41,11 @@ const routes = [
 ]
 
 export const Router = () => {
-  const currentUser = true
+  const currentUser = false
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<MainLayout />}>
-          <Route index element={<div>SEX</div>} />
           {routes.map(route => {
             const { path, component: Component } = route
             return (
