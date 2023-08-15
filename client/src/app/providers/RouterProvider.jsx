@@ -1,5 +1,5 @@
 import { lazy } from 'react'
-import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import { MainLayout } from '~pages/layouts'
 import { Loadable } from '~shared/ui/loadable'
 import { CheckRoute } from '~shared/ui/check-route/index.js'
@@ -18,14 +18,9 @@ const Page404 = Loadable(lazy(() => import('~pages/page-404')))
 // onlyNoAuth если true, то редиректит на главную когда заходишь авторизованным
 // onlyAuth если true, то редиректит на главную когда заходишь авторизованным
 
-const routes = [
+const routesWithLayout = [
   // HomePage - Начальная страница, новостная, просмотр постов
   { path: 'home', component: HomePage, onlyAuth: true },
-
-  { path: '', component: WelcomePage, onlyNoAuth: true },
-
-  // AuthPage - Блок aунтификации и восстановление пароля
-  { path: 'auth/:authType', component: AuthPage, onlyNoAuth: true },
 
   // ProfilePage - Страница пользователя
   { path: '@username', component: ProfilePage, onlyAuth: false },
@@ -36,6 +31,11 @@ const routes = [
   { path: 'im', component: MessengerPage, onlyAuth: true },
   { path: 'im/@username', component: MessengerPage, onlyAuth: true },
 
+]
+const routesWithoutLayout = [
+  { path: '', component: WelcomePage, onlyNoAuth: true },
+  // AuthPage - Блок aунтификации и восстановление пароля
+  { path: 'auth/:authType', component: AuthPage, onlyNoAuth: true },
   // Page404.jsx - Страница не найдена
   { path: '*', component: Page404, onlyAuth: false }
 ]
@@ -43,10 +43,20 @@ const routes = [
 export const Router = () => {
   const currentUser = false
   return (
-    <BrowserRouter>
       <Routes>
+        <Route path="/">
+          {routesWithoutLayout.map(route => {
+            const { path, component: Component } = route
+            return (
+              <Route key={path} path={path} element={<CheckRoute isAuth={currentUser} route={route}>
+                <Component />
+              </CheckRoute>} />
+            )
+          })
+          }
+        </Route>
         <Route path="/" element={<MainLayout />}>
-          {routes.map(route => {
+          {routesWithLayout.map(route => {
             const { path, component: Component } = route
             return (
               <Route key={path} path={path} element={<CheckRoute isAuth={currentUser} route={route}>
@@ -57,6 +67,5 @@ export const Router = () => {
           }
         </Route>
       </Routes>
-    </BrowserRouter>
   )
 }

@@ -1,18 +1,18 @@
 import './Modal.scss'
+import { useModal } from '~shared/lib/modal'
 
-const Modal = ({ active, setActive, children }) => {
+export const Modal = ({ children, closes }) => {
+  const { closeModal } = useModal()
+
+  const handleClose = () => {
+    if (closes) closeModal()
+  }
+
   return (
-    <div
-      className={active ? 'modal actived' : 'modal'}
-      onClick={() => setActive(false)}
-    >
-      <div
-        className={active ? 'modal-container actived' : 'modal-container'}
-        onClick={(e) => e.stopPropagation()}
-      >
+    <div className="modal" onClick={handleClose} >
+      <div className="modal-container" onClick={(event) => event.stopPropagation()}>
         {children}
       </div>
     </div>
   )
 }
-export { Modal }

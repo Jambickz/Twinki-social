@@ -1,7 +1,7 @@
 export const SecondStep = () => {
   return (
     <div>
-      FifthStep
+      SecondStep
     </div>
   )
 }

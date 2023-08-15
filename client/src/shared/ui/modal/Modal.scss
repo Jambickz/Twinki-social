@@ -8,26 +8,18 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  opacity: 0;
-  pointer-events: none;
+  opacity: 1;
+  pointer-events: all;
   transition: 0.5s;
   z-index: var(--ui-index-4);
 }
 
-.modal.actived {
-  opacity: 1;
-  pointer-events: all;
-}
 
 .modal-container {
   padding: 20px;
   border-radius: 12px;
   background-color: white;
   width: 30vw;
-  transform: scale(0.5);
-  transition: 0.4s all;
-}
-
-.modal-container.actived {
   transform: scale(1);
+  transition: 0.4s all;
 }
