@@ -41,7 +41,9 @@ const routesWithoutLayout = [
 ]
 
 export const Router = () => {
-  const currentUser = false
+  console.log("render Router")
+
+  const currentUser = true
   return (
       <Routes>
         <Route path="/">

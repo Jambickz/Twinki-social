@@ -48,4 +48,24 @@ module.exports = class PrismaUserRepository extends UserRepository {
       throw new Error(e.message)
     }
   }
+
+  async getUser (id) {
+    try {
+      const user = await this.db.user.findUnique({
+        where: { id }
+      })
+      return this.userMapper.toDomain(user)
+    } catch (e) {
+      throw new Error(e.message)
+    }
+  }
+
+  async getUsers () {
+    try {
+      const users = await this.db.user.findMany()
+      return users.map(user => this.userMapper.toDomain(user))
+    } catch (e) {
+      throw new Error(e.message)
+    }
+  }
 }

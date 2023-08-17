@@ -14,4 +14,12 @@ module.exports = class UserService {
     const username = await generateUsername(profileName, this.userRepository)
     return await this.userRepository.createUser({ ...data, username, profileName, password: hashPassword })
   }
+
+  async getUser (id) {
+    return this.userRepository.getUser(id)
+  }
+
+  async getUsers () {
+    return await this.userRepository.getUsers()
+  }
 }

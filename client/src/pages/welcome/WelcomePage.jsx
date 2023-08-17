@@ -1,13 +1,7 @@
 import { ModalAuth } from '~widgets/modalAuth/'
-import { useModal } from '~shared/lib/modal'
 
 export const WelcomePage = () => {
-  const { openModal } = useModal()
-
   const handleClickButton = (authType) => {
-    openModal({
-      children: <ModalAuth authType={authType} />
-    })
   }
   return (
     <div>

@@ -1,10 +1,15 @@
-import { createContext, useContext } from 'react'
-
-export const ModalContext = createContext({
-  openModal: () => {},
-  closeModal: () => {}
-})
+import { useState } from 'react'
 
 export const useModal = () => {
-  return useContext(ModalContext)
+  const [modals, setModals] = useState([])
+
+  const open = (modal) => {
+    setModals([...modals, modal])
+  }
+
+  const close = () => {
+    setModals(modals.slice(0, -1))
+  }
+
+  return { open, close, modals }
 }
