@@ -9,7 +9,9 @@ module.exports = () => {
   const authCheck = DI.resolve('authExistsMiddleware')
   router.post('/auth/registration', validationSchema(registration), controller.registration.bind(controller))
   router.post('/auth/login', validationSchema(login), controller.login.bind(controller))
-  router.post('/auth/logout', authCheck, controller.logout.bind(controller))
+  router.get('/auth/refresh', controller.refresh.bind(controller))
+  router.get('/auth/connect', authCheck, controller.connect.bind(controller))
+  router.post('/auth/logout', controller.logout.bind(controller))
   router.post('/auth/create-code', validationSchema(email), controller.sendActivationCode.bind(controller))
   router.post('/auth/check-code', validationSchema(code), controller.checkActivationCode.bind(controller))
   return router

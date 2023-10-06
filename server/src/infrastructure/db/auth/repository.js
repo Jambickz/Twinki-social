@@ -10,14 +10,14 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
   async createSession (sessionData) {
     try {
       const sessionDatabase = this.authMapper.toDatabase(sessionData)
-      console.log(sessionDatabase)
       const session = await this.db.userSession.create({
         data: sessionDatabase
       })
       if (session) return this.authMapper.toDomain(session)
       else return null
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR') 
     }
   }
 
@@ -28,7 +28,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!user
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR') 
     }
   }
 
@@ -44,7 +45,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!result
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR') 
     }
   }
 
@@ -57,7 +59,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!code
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR') 
     }
   }
 
@@ -69,7 +72,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!updatedCode
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR') 
     }
   }
 
@@ -84,7 +88,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return createdCode.activationCode || null
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR') 
     }
   }
 
@@ -104,7 +109,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return session || null
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 
@@ -118,7 +124,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return code || null
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 
@@ -130,7 +137,8 @@ module.exports = class PrismaAuthRepository extends AuthRepository {
       })
       return !!updatedCode
     } catch (error) {
-      throw new Error(error.message)
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 }

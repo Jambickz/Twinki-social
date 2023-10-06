@@ -20,8 +20,9 @@ module.exports = class PrismaUserRepository extends UserRepository {
       })
       if (user) return this.userMapper.toDomain(user)
       else return null
-    } catch (e) {
-      throw new Error(e.message)
+    } catch (error) {
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 
@@ -33,8 +34,9 @@ module.exports = class PrismaUserRepository extends UserRepository {
         data: sessionDatabase
       })
       return this.userMapper.toDomain(newUser)
-    } catch (e) {
-      throw new Error(e.message)
+    } catch (error) {
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 
@@ -44,19 +46,35 @@ module.exports = class PrismaUserRepository extends UserRepository {
         where: { username }
       })
       return !!existingUser
-    } catch (e) {
-      throw new Error(e.message)
+    } catch (error) {
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 
-  async getUser (id) {
+  async getUserById (id) {
     try {
       const user = await this.db.user.findUnique({
         where: { id }
       })
+      if (!user) return null
       return this.userMapper.toDomain(user)
-    } catch (e) {
-      throw new Error(e.message)
+    } catch (error) {
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
+    }
+  }
+
+  async getUserByUsername (username) {
+    try {
+      const user = await this.db.user.findFirst({
+        where: { username }
+      })
+      if (!user) return null
+      return this.userMapper.toDomain(user)
+    } catch (error) {
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 
@@ -64,8 +82,9 @@ module.exports = class PrismaUserRepository extends UserRepository {
     try {
       const users = await this.db.user.findMany()
       return users.map(user => this.userMapper.toDomain(user))
-    } catch (e) {
-      throw new Error(e.message)
+    } catch (error) {
+      console.log(error)
+      throw new Error('DATABASE_ERROR')
     }
   }
 }

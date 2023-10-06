@@ -12,7 +12,6 @@ const MailerService = require('./services/mailer.service')
 const { PrismaClient } = require('@prisma/client')
 
 const container = awilix.createContainer()
-
 container.register({
   userService: awilix.asClass(UserService),
   userRepository: awilix.asClass(PrismaUserRepository),

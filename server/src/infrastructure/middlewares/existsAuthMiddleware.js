@@ -1,16 +1,25 @@
+const APIException = require('~infrastructure/helpers/apiError')
+
 module.exports = ({ tokenService, authService }) => async (req, res, next) => {
-  const authHeader = req.headers.authorization
-  if (!authHeader) return res.error(403, 'ERROR_NO_AUTHORIZATION')
+  try {
+    const { refreshToken } = req.cookies
+    const authHeader = req.headers.authorization
 
-  const [type, token] = authHeader.split(' ')
+    if (!refreshToken || !authHeader) throw new APIException('AUTHENTICATION_FAILED')
+    const [type, token] = authHeader.split(' ')
+    if (type !== 'Bearer') throw new APIException('AUTHENTICATION_FAILED')
 
-  if (type !== 'Bearer') return res.error(403, 'ERROR_INVALID_TOKEN_TYPE')
+    const isRefreshTokenValid = tokenService.validateRefreshToken(refreshToken)
+    if (!isRefreshTokenValid) throw new APIException('AUTHENTICATION_FAILED')
 
-  const decodedId = tokenService.validateRefreshToken(token)
-  if (!decodedId) return res.error(403, 'ERROR_TOKEN_BROKEN')
+    const decodedId = tokenService.validateAccessToken(token)
+    if (!decodedId) throw new APIException('AUTHENTICATION_FAILED')
 
-  const user = await authService.getBySessionId(decodedId)
-  if (!user) return res.error(403, 'ERROR_SESSION_NOT_FOUND')
+    const user = await authService.getBySessionId(decodedId)
+    if (!user) throw new APIException('AUTHENTICATION_FAILED')
 
-  next()
+    next()
+  } catch (e) {
+    next(e)
+  }
 }

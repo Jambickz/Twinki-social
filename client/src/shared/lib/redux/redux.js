@@ -1,4 +1,4 @@
-import { useSelector as useAppSelector, shallowEqual, useDispatch as useAppDispatch } from 'react-redux'
+import { useSelector, shallowEqual, useDispatch } from 'react-redux'
 
-export const useSelector = selector => useAppSelector(selector, shallowEqual)
-export const useDispatch = () => useAppDispatch()
+export const useAppSelector = selector => useSelector(selector, shallowEqual)
+export const useAppDispatch = () => useDispatch()

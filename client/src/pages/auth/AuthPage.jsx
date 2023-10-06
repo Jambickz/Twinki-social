@@ -1,23 +1,17 @@
 import { useParams, useNavigate } from 'react-router-dom'
-import { ModalAuth } from '~widgets/modalAuth'
+import { ModalAuth } from '~widgets/modal-auth'
 import { useEffect } from 'react'
 
 export const AuthPage = () => {
   const { authType } = useParams()
   const navigate = useNavigate()
-
   useEffect(() => {
-    if (!['login', 'register', 'password_reset'].includes(authType)) {
+
+    const validAuthTypes = ['login', 'register', 'password_reset']
+    if (!validAuthTypes.includes(authType)) {
       navigate('/')
-    } else {
-      handleClickFirstButton()
     }
   }, [authType, navigate])
 
-  const handleClickFirstButton = () => {
-  }
-  return (
-    <div>
-    </div>
-  )
+  return <ModalAuth authType={authType} />
 }

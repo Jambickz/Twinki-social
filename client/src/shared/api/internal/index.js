@@ -1,2 +1,3 @@
-export { client } from './api'
-export { internalInstance } from './config'
+import { $api as $apiAxios } from './api'
+
+export default $apiAxios

@@ -1,7 +1,7 @@
 const Joi = require('joi')
 
 const registration = Joi.object({
-  profileName: Joi.string().min(4).max(50).required(),
+  profileName: Joi.string().min(2).max(50).required(),
   email: Joi.string().email().max(255).required(),
   password: Joi.string().min(8).max(128).required()
 }).unknown()

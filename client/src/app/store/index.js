@@ -1,1 +1,1 @@
-export { store } from './store.js' 
+export { appStore } from './store.js'

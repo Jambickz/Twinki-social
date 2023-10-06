@@ -1,15 +1,27 @@
-import { ModalAuth } from '~widgets/modalAuth/'
+import { ModalAuth } from '~widgets/modal-auth/'
+import { useEffect, useState } from 'react'
+import { useNotify } from '~shared/lib/notify'
 
 export const WelcomePage = () => {
-  const handleClickButton = (authType) => {
+  const [authType, setAuthType] = useState(null)
+  const { success } = useNotify()
+  useEffect(() => {
+    success('Welcome')
+  }, [])
+  const handleClickButton = (type) => {
+    setAuthType(type)
   }
+
   return (
-    <div>
-      WelcomePage
+    <>
+      {authType && <ModalAuth authType={authType} setAuthType={setAuthType} />}
       <div>
-        <button onClick={() => handleClickButton('register')}>register</button>
-        <button onClick={() => handleClickButton('login')}>login</button>
+        WelcomePage
+        <div>
+          <button onClick={() => handleClickButton('register')}>register</button>
+          <button onClick={() => handleClickButton('login')}>login</button>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

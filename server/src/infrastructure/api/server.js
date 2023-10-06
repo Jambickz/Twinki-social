@@ -4,7 +4,8 @@ const container = require('../DI')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
 const userAgentMiddleware = require('../middlewares/userAgentMiddleware')
-const errorMiddleware = require('../middlewares/decoratorMiddleware')
+const decoratorMiddleware = require('../middlewares/decoratorMiddleware')
+const errorMiddleware = require('../middlewares/errorMiddleware')
 const userRouter = require('./user/router')
 const authRouter = require('./auth/router')
 
@@ -12,26 +13,23 @@ const PORT = process.env.PORT || 5000
 const CLIENT = process.env.CLIENT_URL
 
 module.exports = async () => {
-  try {
-    const app = express()
+  const app = express()
 
-    app.use(scopePerRequest(container))
-    app.use(express.json())
-    app.use(cookieParser())
+  app.use(scopePerRequest(container))
+  app.use(express.json())
+  app.use(cookieParser())
 
-    app.use(cors({
-      origin: CLIENT,
-      credentials: true
-    }))
+  app.use(cors({
+    origin: CLIENT,
+    credentials: true
+  }))
 
-    app.use(userAgentMiddleware)
-    app.use(errorMiddleware)
+  app.use(userAgentMiddleware)
+  app.use(decoratorMiddleware)
 
-    app.use('/api', userRouter())
-    app.use('/api', authRouter())
+  app.use('/api', userRouter())
+  app.use('/api', authRouter())
+  app.use(errorMiddleware)
 
-    app.listen(PORT, () => console.log(`server started ${PORT}`))
-  } catch (e) {
-    console.log(e)
-  }
+  app.listen(PORT, () => console.log(`server started ${PORT}`))
 }

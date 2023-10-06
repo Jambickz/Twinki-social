@@ -1,15 +1,26 @@
 import { useState } from 'react'
+import { Modal } from '~shared/ui/modal'
 
 export const useModal = () => {
-  const [modals, setModals] = useState([])
+  const [isOpen, setOpen] = useState(false)
+  const [content, setContent] = useState(null)
 
-  const open = (modal) => {
-    setModals([...modals, modal])
+  const openModal = (c) => {
+    setOpen(true)
+    setContent(c)
   }
 
-  const close = () => {
-    setModals(modals.slice(0, -1))
+  const closeModal = () => {
+    setOpen(false)
+    setContent(null)
   }
 
-  return { open, close, modals }
+  const ModalWrapper = () => (
+    isOpen && content && (
+      <Modal>
+        {content}
+      </Modal>
+    )
+  )
+  return { openModal, closeModal, ModalWrapper }
 }
