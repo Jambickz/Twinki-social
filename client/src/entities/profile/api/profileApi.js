@@ -6,6 +6,11 @@ export const profileApi = $api.injectEndpoints({
       query: (username) => ({
         url: `/user/${username}`
       })
+    }),
+    feed: build.query({
+      query: (username) => ({
+        url: `/posts/${username}`
+      })
     })
   })
 })

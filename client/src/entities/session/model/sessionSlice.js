@@ -16,11 +16,10 @@ export const sessionSlice = createSlice({
       state.isAuthorized = false
     },
     setUser: (state, { payload }) => {
+      if (!payload) return state.isAuthorized = false
       state.isAuthorized = true
-      if (state.isAuthorized) {
-        state.user = payload.user
-        state.accessToken = payload.accessToken
-      }
+      state.user = payload.user
+      state.accessToken = payload.accessToken
     }
   }
 })

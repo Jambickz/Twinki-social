@@ -43,15 +43,14 @@ const routesWithoutLayout = [
 
 export const Router = () => {
   console.log('render router')
-  const currentUser = useAppSelector(state => state.session.isAuthorized)
-  console.log(currentUser)
+  const isAuth = useAppSelector(state => state.session.isAuthorized)
   return (
       <Routes>
         <Route path="/">
           {routesWithoutLayout.map(route => {
             const { path, component: Component } = route
             return (
-              <Route key={path} path={path} element={<CheckRoute isAuth={currentUser} route={route}>
+              <Route key={path} path={path} element={<CheckRoute isAuth={isAuth} route={route}>
                 <Component />
               </CheckRoute>} />
             )
@@ -62,7 +61,7 @@ export const Router = () => {
           {routesWithLayout.map(route => {
             const { path, component: Component } = route
             return (
-              <Route key={path} path={path} element={<CheckRoute isAuth={currentUser} route={route}>
+              <Route key={path} path={path} element={<CheckRoute isAuth={isAuth} route={route}>
                 <Component />
               </CheckRoute>} />
             )

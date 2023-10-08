@@ -9,11 +9,11 @@ export const sessionApi = $api.injectEndpoints({
       })
     }),
     refreshToken: build.query({
-      query: () => '/auth/connect',
+      query: () => '/auth/refresh',
       async onQueryStarted (arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled
-          dispatch(setUser(data.data.user))
+          dispatch(setUser(data.data))
         } catch (e) {
           dispatch(clearSessionData())
         }

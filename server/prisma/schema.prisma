@@ -116,7 +116,7 @@ model Post {
   uploads     PostUpload[]
 
   @@index([id, userId, senderId])
-  @@map("posts")
+  @@map("post")
 }
 
 model PostUpload {
