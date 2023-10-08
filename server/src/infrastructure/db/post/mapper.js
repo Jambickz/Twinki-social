@@ -1,8 +1,8 @@
-const Service = require('~domain/auth/model')
+const PostModel = require('~domain/post/model')
 
-module.exports = class ServiceMapper {
+module.exports = class PostMapper {
   static toDomain (data) {
-    return new Service(data)
+    return new PostModel(data)
   }
 
   static toDatabase (post) {

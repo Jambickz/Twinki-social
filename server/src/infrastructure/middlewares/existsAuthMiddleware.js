@@ -17,7 +17,7 @@ module.exports = ({ tokenService, authService }) => async (req, res, next) => {
 
     const user = await authService.getBySessionId(decodedId)
     if (!user) throw new APIException('AUTHENTICATION_FAILED')
-
+    req.user = user
     next()
   } catch (e) {
     next(e)

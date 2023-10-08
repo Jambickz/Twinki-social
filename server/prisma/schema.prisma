@@ -104,10 +104,10 @@ model UserUpload {
 }
 
 model Post {
-  id     Int    @id @default(autoincrement())
-  userId BigInt @map("user_id")
+  id     Int @id @default(autoincrement())
+  userId Int @map("user_id")
 
-  senderId    BigInt       @map("sender_id")
+  senderId    Int          @map("sender_id")
   createdAt   DateTime     @default(now()) @map("created_at")
   updatedAt   DateTime?    @map("updated_at")
   caption     String       @map("caption") @db.VarChar(255)

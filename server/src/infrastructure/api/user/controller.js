@@ -32,6 +32,7 @@ module.exports = class UserController {
       const { refreshToken } = req.cookies
       const session = this.authService.refresh(refreshToken)
       const { sessionId } = session
+      console.log(req.user)
       const user = await this.authService.getBySessionId(sessionId)
       res.success(filterObject(user, 'USER'), 'GET_ME_SUCCESS')
     } catch (error) {
